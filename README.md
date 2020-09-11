@@ -1,5 +1,5 @@
-#Amazon Clone
-##Technologies
+# Amazon Clone
+## Technologies
 * React
-##Author
-###Ebriopes
+## Author
+Ebriopes
