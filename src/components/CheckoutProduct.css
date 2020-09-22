@@ -1,0 +1,16 @@
+.checkout_product {
+	display: flex;
+	margin: 20px 0;
+}
+.checkout_product_info {
+	padding-left: 20px;
+}
+.checkout_product_image {
+	object-fit: contain;
+	width: 180px;
+	height: 180px;
+}
+.checkout_product_title {
+	font-size: 17px;
+	font-weight: 800;
+}

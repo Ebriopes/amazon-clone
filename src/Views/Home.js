@@ -1,7 +1,7 @@
 import React from 'react';
 import Product from '../components/Product';
-import './Home.css';
 import background from '../images/background.jpg';
+import './Home.css';
 
 const Home = () => {
 	return (

@@ -1,10 +1,10 @@
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import './Header.css';
 import logo from '../images/logo_white.png';
 import { Link } from 'react-router-dom';
 import { useStateValue } from '../contexts/StateProvidder';
+import './Header.css';
 
 const Header = () => {
 	const [{ basket }] = useStateValue();
@@ -18,14 +18,16 @@ const Header = () => {
 				<SearchIcon className="header_search_icon"/>
 			</div>
 			<div className="header_nav">
-				<div className="header_option">
-					<span className="header_line_one">
-						Lenguage
-					</span>
-					<span className="header_line_two">
-						Spanish
-					</span>
-				</div>
+				<Link to="/login">
+					<div className="header_option">
+						<span className="header_line_one">
+							Hello
+						</span>
+						<span className="header_line_two">
+							Sign-In
+						</span>
+					</div>
+				</Link>
 				<div className="header_option">
 					<span className="header_line_one">
 						Hi bruh

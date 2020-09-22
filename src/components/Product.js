@@ -22,7 +22,7 @@ const Product = ( { id, image, price, rating, title } ) => {
 			<div className="product_info">
 				<p>{title}</p>
 				<CurrencyFormat renderText={value => (
-					<p><strong>
+					<p className="product_price"><strong>
 						{value}
 					</strong></p>
 				)}
