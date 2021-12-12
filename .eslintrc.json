@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "extends": ["eslint:recommend", "prettier"],
+  "plugings": ["prettier"],
+  "rules": {
+    "no-unsed-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "prettier/prettier": "error"
+  }
+}
