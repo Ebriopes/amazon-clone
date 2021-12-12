@@ -1,7 +1,10 @@
 import React from 'react';
-import './Product.css';
-import { useStateValue } from '../contexts/StateProvidder';
 import CurrencyFormat from 'react-currency-format';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
+import { useStateValue } from '../contexts/StateProvidder';
+import './Product.css';
 
 const Product = ( { id, image, price, rating, title } ) => {
 	const [ , dispatch ] = useStateValue();
@@ -34,8 +37,12 @@ const Product = ( { id, image, price, rating, title } ) => {
 					prefix={"$"}
 				/>
 				<div className="product_rating">
-					{Array( rating ).fill().map( ( _, i ) =>
-						<span role="img" aria-label="star" key={Math.random( i )}>🌟</span>
+					{Array( 5 ).fill().map( ( _, i ) =>
+						<FontAwesomeIcon 
+              icon={ i < rating ? faStar : farStar}
+              color="gold"
+              aria-label="star"
+              key={Math.random( i )}/>
 					)}
 				</div>
 			</div>
