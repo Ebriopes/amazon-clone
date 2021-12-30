@@ -1,51 +1,67 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { useStateValue } from './contexts/StateProvidder'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from './firebase'
-import Header from './components/Header'
-import Home from './Views/Home'
-import Login from './Views/Login'
-import Checkout from './Views/Checkout'
-import './App.css'
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { useStateValue } from './contexts/StateProvidder';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import Header from './components/Header';
+import Home from './views/Home';
+import Login from './views/Login';
+import Checkout from './views/Checkout';
+import Payment from './views/Payment';
+import './App.css';
+import Orders from 'views/Orders';
+
+const promise = loadStripe(
+	'pk_test_51KBR2KLvjBdLcdzrCmKGsttQM2ZBte2YUXWtGJ5HvF0UBjsFV4hLK1ozJgnX1Lb44rKuulRiLUT9E5ZepQ5E7X8x001bqW8awK'
+);
 
 function App() {
-  const [, dispatch] = useStateValue()
+	const [, dispatch] = useStateValue();
 
-  useEffect(() => {
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        console.log(user)
-
-        dispatch({
-          type: 'SET_USER',
-          user
-        })
-      } else {
-        dispatch({
-          type: 'SET_USER',
-          user: null
-        })
-      }
-    })
-  }, [dispatch])
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/">
-          <Header />
-          <Home />
-        </Route>
-        <Route exact path="/checkout">
-          <Header />
-          <Checkout />
-        </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-      </Switch>
-    </Router>
-  )
+	useEffect(() => {
+		onAuthStateChanged(auth, user => {
+			if (user) {
+				dispatch({
+					type: 'SET_USER',
+					user
+				});
+			} else {
+				dispatch({
+					type: 'SET_USER',
+					user: null
+				});
+			}
+		});
+	}, [dispatch]);
+	return (
+		<Router>
+			<Switch>
+				<Route exact path="/">
+					<Header />
+					<Home />
+				</Route>
+				<Route exact path="/checkout">
+					<Header />
+					<Checkout />
+				</Route>
+				<Route exact path="/login">
+					<Login />
+				</Route>
+				<Route exact path="/payment">
+					<Header />
+					<Elements stripe={promise}>
+						<Payment />
+					</Elements>
+				</Route>
+				<Route exact path="/orders">
+					<Header />
+					<Orders />
+				</Route>
+			</Switch>
+		</Router>
+	);
 }
 
-export default App
+export default App;
