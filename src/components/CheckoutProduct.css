@@ -4,14 +4,15 @@
 }
 
 .checkout-product-image {
-	flex: 0.3;
+	flex: 0.2;
 	object-fit: contain;
-	width: 180px;
+	width: 100%;
+	max-width: 200px;
 	height: 180px;
 }
 
 .checkout-product-info {
-	flex: 0.7;
+	flex: 0.8;
 	width: 100%;
 	padding-left: 20px;
 	display: flex;

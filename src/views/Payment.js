@@ -3,11 +3,11 @@ import { Link, useHistory } from 'react-router-dom';
 import CurrencyFormat from 'react-currency-format';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { doc, setDoc } from 'firebase/firestore/lite';
+import { db } from 'firebase';
 import { useStateValue } from 'contexts/StateProvidder';
 import { getBasketTotal } from 'contexts/Reducer';
 import CheckoutProduct from 'components/CheckoutProduct';
-import axios from 'services/Axios';
-import { db } from 'firebase';
+import { firebaseInstance as axios } from 'services/Axios';
 import './Payment.css';
 
 function Payment() {
@@ -18,7 +18,7 @@ function Payment() {
 	const [processing, setProcessing] = useState(false);
 	const [succeeeded, setSucceeeded] = useState(false);
 	const [clientSecret, setClientSecret] = useState(null);
-	const { quantity: items, amount } = getBasketTotal(basket);
+	const { quantity: products, amount } = getBasketTotal(basket);
 	const stripe = useStripe();
 	const elements = useElements();
 
@@ -72,7 +72,7 @@ function Payment() {
 
 	useEffect(() => {
 		const getClientSecret = async () => {
-			if (items) {
+			if (products) {
 				try {
 					const response = await axios({
 						method: 'post',
@@ -85,13 +85,13 @@ function Payment() {
 		};
 
 		getClientSecret();
-	}, [items, amount]);
+	}, [products, amount]);
 	return (
 		<div className='payment'>
 			<div className='payment-container'>
 				<h1>
 					{' '}
-					Checkout (<Link to='/checkout'>{items} items</Link>){' '}
+					Checkout (<Link to='/checkout'>{products} items</Link>){' '}
 				</h1>
 
 				<div className='payment-section'>
@@ -112,7 +112,7 @@ function Payment() {
 					</div>
 
 					<div className='payment-items'>
-						{items ? (
+						{products ? (
 							basket.map(item => (
 								<CheckoutProduct
 									hiddenButton
@@ -148,7 +148,7 @@ function Payment() {
 									prefix='$'
 								/>
 								<button
-									disabled={processing || disabled || succeeeded || !items}
+									disabled={processing || disabled || succeeeded || !products}
 								>
 									<span>{processing ? 'Processing' : 'Buy now'}</span>
 								</button>

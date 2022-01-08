@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const instance = axios.create({
+export const firebaseInstance = axios.create({
 	baseURL: 'https://us-central1-amanaz.cloudfunctions.net/api'
 });
 
-export default instance;
+export const fakeStoreInstance = axios.create({
+	baseURL: 'https://fakestoreapi.com'
+});

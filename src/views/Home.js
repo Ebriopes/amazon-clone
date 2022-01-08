@@ -1,70 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fakeStoreInstance as axios } from 'services/Axios';
 import Product from 'components/Product';
 import background from 'images/background.jpg';
 import './Home.css';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Home = () => {
+	const [loading, setLoading] = useState(true);
+	const [groupProducts, setGroupProducts] = useState([]);
+
+	useEffect(() => {
+		const getProducts = async () => {
+			try {
+				const res = await axios.get('/products');
+				const products = res.data;
+
+				const groupProducts = [
+					products?.splice(0, 2),
+					products?.splice(0, 4),
+					products?.splice(0, 3),
+					products?.splice(0, 4),
+					products
+				];
+
+				setGroupProducts(groupProducts);
+
+				setLoading(false);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		getProducts();
+	}, []);
+
 	return (
-		<div className='home'>
-			<div className='home-container'>
+		<main className='home'>
+			<section className='home-container'>
 				<img className='home-image' alt='background' src={background} />
-				<div className='home-row'>
-					<Product
-						id='1234232344'
-						image='https://img.pngio.com/portal-gun-png-portal-2-atlas-portal-gun-transparent-png-portal-gun-png-920_656.png'
-						price={2000}
-						rating={5}
-						title='Portal gun replica from Portal videogame'
+
+				{loading ? (
+					<FontAwesomeIcon
+						className='home-loading'
+						icon={faSpinner}
+						size='10x'
+						color='#F7981D'
 					/>
-					<Product
-						id='123423412'
-						image='https://images-na.ssl-images-amazon.com/images/I/51vWGNQMICL._AC_SY741_.jpg'
-						price={800}
-						rating={5}
-						title="Gantz Yamazaki's sculture"
-					/>
-				</div>
-				<div className='home-row'>
-					<Product
-						id='123423432'
-						image='https://e00-marca.uecdn.es/assets/multimedia/imagenes/2020/09/02/15990624914067.jpg'
-						price={700}
-						rating={5}
-						title='PlaySation 5 - Sony console'
-					/>
-					<Product
-						id='123423423'
-						image='https://images-na.ssl-images-amazon.com/images/I/71D5EdHS2qL._AC_SL1500_.jpg'
-						price={20}
-						rating={3}
-						title="Straw hat similar to Luffy's hat from One Piece"
-					/>
-					<Product
-						id='123423442'
-						image='https://images-na.ssl-images-amazon.com/images/I/41nvg6s%2BOdL._AC_.jpg'
-						price={1100}
-						rating={5}
-						title='Yamato blade, property of Virgil descendent of Sparda'
-					/>
-				</div>
-				<div className='home-row'>
-					<Product
-						id='123423454'
-						image='https://steelcrewblog.files.wordpress.com/2013/10/prince_of_persia_sands_of_time_dagger_uc2679.jpg'
-						price={1500}
-						rating={4}
-						title='Dagger of Time from Prince of Persia'
-					/>
-					<Product
-						id='123412341'
-						image='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ2NYzpTBYXaPzKth_bMScotO2nr___jcFvMg&usqp=CAU'
-						price={2000}
-						rating={2}
-						title='Piedra filosofal para vencer a Voldemort en la nuca del profe'
-					/>
-				</div>
-			</div>
-		</div>
+				) : (
+					groupProducts?.map((group, gid) => (
+						<article id={`group-${gid}`} key={gid} className='home-row'>
+							{group.map(({ id, image, price, rating, title }) => (
+								<Product
+									id={id}
+									image={image}
+									key={id}
+									price={price}
+									rating={rating?.rate}
+									title={title}
+								/>
+							))}
+						</article>
+					))
+				)}
+			</section>
+		</main>
 	);
 };
 
