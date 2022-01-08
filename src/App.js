@@ -10,15 +10,19 @@ import Home from './views/Home';
 import Login from './views/Login';
 import Checkout from './views/Checkout';
 import Payment from './views/Payment';
-import './App.css';
 import Orders from 'views/Orders';
+import './App.css';
 
 const promise = loadStripe(
 	'pk_test_51KBR2KLvjBdLcdzrCmKGsttQM2ZBte2YUXWtGJ5HvF0UBjsFV4hLK1ozJgnX1Lb44rKuulRiLUT9E5ZepQ5E7X8x001bqW8awK'
 );
 
 function App() {
-	const [, dispatch] = useStateValue();
+	const [{ basket }, dispatch] = useStateValue();
+
+	useEffect(() => {
+		localStorage.setItem('basket', JSON.stringify(basket || []));
+	}, [basket]);
 
 	useEffect(() => {
 		onAuthStateChanged(auth, user => {
@@ -35,27 +39,28 @@ function App() {
 			}
 		});
 	}, [dispatch]);
+
 	return (
 		<Router>
 			<Switch>
-				<Route exact path="/">
+				<Route exact path='/'>
 					<Header />
 					<Home />
 				</Route>
-				<Route exact path="/checkout">
+				<Route exact path='/checkout'>
 					<Header />
 					<Checkout />
 				</Route>
-				<Route exact path="/login">
+				<Route exact path='/login'>
 					<Login />
 				</Route>
-				<Route exact path="/payment">
+				<Route exact path='/payment'>
 					<Header />
 					<Elements stripe={promise}>
 						<Payment />
 					</Elements>
 				</Route>
-				<Route exact path="/orders">
+				<Route exact path='/orders'>
 					<Header />
 					<Orders />
 				</Route>

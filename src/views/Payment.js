@@ -18,45 +18,51 @@ function Payment() {
 	const [processing, setProcessing] = useState(false);
 	const [succeeeded, setSucceeeded] = useState(false);
 	const [clientSecret, setClientSecret] = useState(null);
+	const { quantity: items, amount } = getBasketTotal(basket);
 	const stripe = useStripe();
 	const elements = useElements();
 
 	const handleSubmit = async event => {
 		event.preventDefault();
-		setProcessing(true);
 
-		const payload = await stripe
-			.confirmCardPayment(clientSecret, {
-				payment_method: {
-					card: elements.getElement(CardElement)
-				}
-			})
-			.then(async ({ error, paymentIntent }) => {
-				setProcessing(false);
+		if (clientSecret) {
+			setProcessing(true);
 
-				if (!error) {
-					setSucceeeded(true);
-					setError(null);
+			await stripe
+				.confirmCardPayment(clientSecret, {
+					payment_method: {
+						card: elements.getElement(CardElement)
+					}
+				})
+				.then(async ({ error, paymentIntent }) => {
+					setProcessing(false);
 
-					await setDoc(
-						doc(db, 'users', user?.uid, 'orders', paymentIntent?.id),
-						{
-							basket: basket,
-							amount: paymentIntent?.amount,
-							created: paymentIntent?.created
-						},
-						{ merge: true }
-					);
+					if (!error) {
+						setSucceeeded(true);
+						setError(null);
 
-					dispatch({
-						type: 'EMPTY_BASKET'
-					});
+						await setDoc(
+							doc(db, 'users', user?.uid, 'orders', paymentIntent?.id),
+							{
+								basket: basket,
+								amount: paymentIntent?.amount,
+								created: paymentIntent?.created
+							},
+							{ merge: true }
+						);
 
-					history.replace('/orders');
-				} else {
-					setError(error?.message);
-				}
-			});
+						dispatch({
+							type: 'EMPTY_BASKET'
+						});
+
+						history.replace('/orders');
+					} else {
+						setError(error?.message);
+					}
+				});
+		} else {
+			setError('client secret error');
+		}
 	};
 
 	const handleChange = event => {
@@ -66,11 +72,11 @@ function Payment() {
 
 	useEffect(() => {
 		const getClientSecret = async () => {
-			if (getBasketTotal(basket) > 0) {
+			if (items) {
 				try {
 					const response = await axios({
 						method: 'post',
-						url: `/payments/create?total=${getBasketTotal(basket) * 100}`
+						url: `/payments/create?total=${amount * 100}`
 					});
 
 					setClientSecret(response?.data?.clientSecret);
@@ -79,69 +85,76 @@ function Payment() {
 		};
 
 		getClientSecret();
-	}, []);
+	}, [items, amount]);
 	return (
-		<div className="payment">
-			<div className="payment-container">
+		<div className='payment'>
+			<div className='payment-container'>
 				<h1>
 					{' '}
-					Checkout (<Link to="/checkout">{basket?.length} items</Link>){' '}
+					Checkout (<Link to='/checkout'>{items} items</Link>){' '}
 				</h1>
 
-				<div className="payment-section">
-					<div className="payment-title">
+				<div className='payment-section'>
+					<div className='payment-title'>
 						<h3>Delivery Address</h3>
 						<p>{user?.address}</p>
 					</div>
 
-					<div className="payment-address">
+					<div className='payment-address'>
 						<p>{user?.email}</p>
 						<p>123 React Lane</p>
 						<p>Los Angeles, CA</p>
 					</div>
 				</div>
-				<div className="payment-section">
-					<div className="payment-title">
+				<div className='payment-section'>
+					<div className='payment-title'>
 						<h3>Review items and delivery</h3>
 					</div>
 
-					<div className="payment-items">
-						{basket.map(item => (
-							<CheckoutProduct
-								id={item?.id}
-								title={item?.title}
-								image={item?.image}
-								price={item?.price}
-								rating={item?.rating}
-								key={item?.id}
-								hiddenButton
-							/>
-						))}
+					<div className='payment-items'>
+						{items ? (
+							basket.map(item => (
+								<CheckoutProduct
+									hiddenButton
+									id={item?.id}
+									image={item?.image}
+									key={item?.id}
+									price={item?.price}
+									quantity={item?.quantity}
+									rating={item?.rating}
+									title={item?.title}
+								/>
+							))
+						) : (
+							<h2>Oops... Your basket is empty!</h2>
+						)}
 					</div>
 				</div>
-				<div className="payment-section">
-					<div className="payment-title">
+				<div className='payment-section'>
+					<div className='payment-title'>
 						<h3>Payment Method</h3>
 					</div>
-					<div className="payment-details">
+					<div className='payment-details'>
 						<form onSubmit={handleSubmit}>
-							<CardElement onChange={handleChange} />
+							<CardElement className='payment-card' onChange={handleChange} />
 
-							<div className="payment-price-container">
+							<div className='payment-price-container'>
 								<CurrencyFormat
 									renderText={value => <h3>Order Total: {value}</h3>}
 									decimalScale={2}
-									value={getBasketTotal(basket)}
+									value={amount}
 									displayType={'text'}
 									thousandSeparator={true}
-									prefix="$"
+									prefix='$'
 								/>
-								<button disabled={processing || disabled || succeeeded}>
-									<span>{processing ? <p>Processing</p> : 'Buy now'}</span>
+								<button
+									disabled={processing || disabled || succeeeded || !items}
+								>
+									<span>{processing ? 'Processing' : 'Buy now'}</span>
 								</button>
 							</div>
 
-							{error && <div>{error}</div>}
+							{error && <div className='payment-error'>{error}</div>}
 						</form>
 					</div>
 				</div>

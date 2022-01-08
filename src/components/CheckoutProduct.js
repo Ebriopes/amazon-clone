@@ -1,10 +1,10 @@
 import React from 'react';
-import './CheckoutProduct.css';
-import { useStateValue } from 'contexts/StateProvidder';
 import CurrencyFormat from 'react-currency-format';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as emptyStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as fullStar } from '@fortawesome/free-regular-svg-icons';
+import { useStateValue } from 'contexts/StateProvidder';
+import './CheckoutProduct.css';
 
 function CheckoutProduct({
 	id,
@@ -12,9 +12,11 @@ function CheckoutProduct({
 	price,
 	rating,
 	title,
-	hiddenButton = false
+	quantity,
+	hiddenButton = false,
+	hiddenOptions = false
 }) {
-	const [, dispatch] = useStateValue();
+	const [{ basket }, dispatch] = useStateValue();
 
 	const removeFromBasket = () => {
 		dispatch({
@@ -22,41 +24,98 @@ function CheckoutProduct({
 			id: id
 		});
 	};
+
+	const modifyBasket = e => {
+		const value = Number.parseInt(e.currentTarget.value);
+
+		if (value > 0) {
+			const newBasket = [...basket];
+			const item = newBasket.find(basketItem => basketItem?.id === id);
+
+			item.quantity = value;
+
+			dispatch({
+				type: 'ADD_TO_BASKET',
+				item: newBasket
+			});
+		} else if (value === 0) {
+			removeFromBasket();
+		}
+	};
+
 	return (
-		<div className="checkout_product">
-			<img className="checkout_product_image" src={image} alt="Product" />
-			<div className="checkout_product_info">
-				<p className="checkout_Product_title">{title}</p>
-				<CurrencyFormat
-					renderText={value => (
-						<p>
-							<strong>{value}</strong>
-						</p>
-					)}
-					decimalScale={2}
-					fixedDecimalScale={true}
-					value={price}
-					displayType={'text'}
-					thousandSeparator={true}
-					prefix={'$'}
-				/>
-				<div className="checkout_product_rating">
-					{Array(5)
-						.fill()
-						.map((_, i) => (
-							<FontAwesomeIcon
-								icon={i < rating ? faStar : farStar}
-								color="gold"
-								aria-label="star"
-								key={i}
-							/>
-						))}
-				</div>
-				{!hiddenButton && (
-					<button onClick={removeFromBasket}>Remove from basket</button>
+		<article className='checkout-product'>
+			<img className='checkout-product-image' src={image} alt='Product' />
+
+			<aside className='checkout-product-info'>
+				<section>
+					<p className='checkout-product-title'>
+						{title}
+						<CurrencyFormat
+							renderText={value => (
+								<span>
+									{hiddenOptions && quantity > 1 && `(${quantity} items) `}
+									<strong>{value}</strong>
+								</span>
+							)}
+							decimalScale={2}
+							fixedDecimalScale
+							value={price}
+							displayType={'text'}
+							thousandSeparator
+							prefix={'$'}
+						/>
+					</p>
+					<div className='checkout-product-rating'>
+						{Array(5)
+							.fill()
+							.map((_, i) => (
+								<FontAwesomeIcon
+									icon={i < rating ? emptyStar : fullStar}
+									color='#F7981D'
+									aria-label='star'
+									key={i}
+								/>
+							))}
+					</div>
+				</section>
+
+				{!hiddenOptions && (
+					<section className='checkout-product-options'>
+						<select
+							name='quantity'
+							id={`quantity-${id}`}
+							className='checkout-product-quantity'
+							value={quantity}
+							onChange={modifyBasket}
+						>
+							{Array.from({ length: 11 }).map((_, value) => (
+								<option
+									key={`${id}-${value}`}
+									value={value === 10 && quantity > value ? quantity : value}
+								>
+									Qty:{' '}
+									{value === 0
+										? '0 (Delete)'
+										: value === 10 && quantity > value
+										? quantity
+										: value}
+								</option>
+							))}
+						</select>
+
+						{!hiddenButton && (
+							<button
+								className='checkout-product-remove'
+								onClick={removeFromBasket}
+							>
+								Delete
+							</button>
+						)}
+					</section>
 				)}
-			</div>
-		</div>
+			</aside>
+		</article>
 	);
 }
 

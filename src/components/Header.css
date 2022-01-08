@@ -1,63 +1,112 @@
 .header {
-	height: 60px;
-	display: flex;
-	align-items: center;
-	background-color: #131921;
 	position: sticky;
 	top: 0;
+	display: grid;
+	grid-template:
+		'logo search search search search search search nav nav'auto;
+	height: 60px;
+	padding: 0.5rem;
+	background-color: #131921;
 	z-index: 100;
-	gap: clamp(1rem, 5vw, 5rem);
 }
-.header_logo {
+
+.header>a {
+	grid-area: logo;
+	display: flex;
+	align-items: center;
+}
+
+.header-logo {
 	width: 100px;
-	object-fit: contain;
-	margin: 10px 20px 0;
+	height: 40px;
+	object-fit: cover;
+	margin: 0 1rem;
 }
-.header_search {
+
+.header-search {
+	grid-area: search;
+	display: flex;
+	align-items: center;
+}
+
+.header-search-bar {
 	display: flex;
 	flex: 1;
 	align-items: center;
 	border-radius: 5px;
 	overflow: hidden;
 }
-.header_search_input {
+
+.header-search-input {
 	height: 2rem;
 	padding: 10px;
 	border: none;
 	width: 100%;
 }
-.header_search_icon {
+
+.header-search-icon {
 	padding: 5px;
 	height: 2rem !important;
 	width: 2rem !important;
 	background-color: #cd9042;
 }
-.header_line_one {
-	font-size: 10px;
+
+.header-line-one {
+	font-size: 12px;
 }
-.header_line_two {
-	font-size: 13px;
+
+.header-line-two {
+	font-size: 14px;
 	font-weight: 800;
 }
-.header_nav {
+
+.header-nav {
+	grid-area: nav;
 	display: flex;
+	align-items: center;
 	justify-content: space-evenly;
 }
-.header_option {
+
+.header-option {
 	display: flex;
 	flex-direction: column;
 	margin: 0 10px;
 	color: whitesmoke;
 }
-.header_option_basket {
-	display: flex;
-	align-items: center;
+
+.header-option-basket {
+	position: relative;
 	color: white;
 }
-.header_basket_count {
-	margin: 0 10px;
+
+.header-option-basket svg {
+	width: 2rem;
+	height: 2rem;
+}
+
+.header-basket-count {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 0.85rem;
+	color: #F08804;
 }
 
 .header a {
 	text-decoration: none;
+}
+
+@media screen and (max-width: 640px) {
+	.header {
+		height: 100px;
+		grid-template:
+			'logo nav'auto 'search search'auto;
+	}
+
+	.header-logo {
+		width: 60px;
+		height: 30px;
+	}
 }

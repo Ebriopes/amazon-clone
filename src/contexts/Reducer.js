@@ -1,12 +1,19 @@
 export const initialState = {
-	basket: [],
+	basket: localStorage.getItem('basket')
+		? JSON.parse(localStorage.getItem('basket'))
+		: [],
 	user: null
 };
 
 export const getBasketTotal = basket =>
 	basket?.reduce(
-		(accumulator, currentValue) => accumulator + currentValue.price,
-		0
+		(items, { quantity, price }) => {
+			items.quantity += quantity;
+			items.amount += quantity * price;
+
+			return items;
+		},
+		{ quantity: 0, amount: 0 }
 	);
 
 const reducer = (state, action) => {
@@ -14,7 +21,7 @@ const reducer = (state, action) => {
 		case 'ADD_TO_BASKET':
 			return {
 				...state,
-				basket: [...state.basket, action.item]
+				basket: action?.item
 			};
 		case 'REMOVE_FROM_BASKET':
 			const index = state.basket.findIndex(

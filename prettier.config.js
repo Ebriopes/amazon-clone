@@ -6,7 +6,8 @@ const options = {
   singleQuote: true,
   tabWidth: 2,
   useTabs: true,
-  trailingComma: 'none'
+  trailingComma: 'none',
+  jsxSingleQuote: true
 };
 
 module.exports = options;

@@ -1,14 +1,35 @@
-.checkout{
+.checkout {
 	display: flex;
+	gap: 1rem;
 	padding: 20px;
-	background-color: white;
+	background-color: #EAEDED;
 	height: max-content;
 }
-.checkout_tilte{
+
+.checkout-left {
+	width: 100%;
+	padding: 1rem 2rem;
+	background-color: #FFFDFC;
+}
+
+.checkout-left .checkout-product {
+	border-top: 1px solid #DDD;
+}
+
+.checkout-right {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.checkout-tilte {
 	margin-right: 10px;
 	padding: 10px;
-	border-bottom: 1px solid lightgray; 
 }
-.checkout_left{
-	width: 100%;
+
+.checkout-subtotal {
+	padding: 1rem;
+	border-top: 1px solid #DDD;
+	text-align: end;
+	font-size: 18px;
 }

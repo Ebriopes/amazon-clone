@@ -1,15 +1,18 @@
 import React from 'react';
-import SearchIcon from '@material-ui/icons/Search';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { Link } from 'react-router-dom';
+import SearchIcon from '@material-ui/icons/Search';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingBag } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from '@firebase/auth';
 import { auth } from 'firebase';
 import { useStateValue } from 'contexts/StateProvidder';
+import { getBasketTotal } from 'contexts/Reducer';
 import logo from 'images/logo_white.png';
 import './Header.css';
 
 const Header = () => {
 	const [{ basket, user }] = useStateValue();
+	const { quantity: items } = getBasketTotal(basket);
 
 	const handleAuthentication = () => {
 		if (user) {
@@ -24,46 +27,46 @@ const Header = () => {
 	};
 
 	return (
-		<div className="header">
-			<Link to="/">
-				<img className="header_logo" src={logo} alt="logo" />
+		<div className='header'>
+			<Link to='/'>
+				<img className='header-logo' src={logo} alt='logo' />
 			</Link>
 
-			<div className="header_search">
-				<input className="header_search_input" type="text" />
-				<SearchIcon className="header_search_icon" />
+			<div className='header-search'>
+				<div className='header-search-bar'>
+					<input className='header-search-input' type='text' />
+					<SearchIcon className='header-search-icon' />
+				</div>
 			</div>
 
-			<div className="header_nav">
+			<div className='header-nav'>
 				<Link to={!user ? '/login' : ''}>
-					<div onClick={handleAuthentication} className="header_option">
-						<span className="header_line_one">
+					<div onClick={handleAuthentication} className='header-option'>
+						<span className='header-line-one'>
 							Hello{user ? ' ' + user?.email : ', Sign in'}
 						</span>
-						<span className="header_line_two">
+						<span className='header-line-two'>
 							{user ? 'Sign-out' : 'Sign-In'}
 						</span>
 					</div>
 				</Link>
 
-				<div className="header_option">
-					<span className="header_line_one">Hi bruh</span>
-					<span className="header_line_two">Count</span>
-				</div>
-
-				<Link to="/orders">
-					<div className="header_option">
-						<span className="header_line_one">returns</span>
-						<span className="header_line_two">& orders</span>
+				<Link to='/orders'>
+					<div className='header-option'>
+						<span className='header-line-one'>returns</span>
+						<span className='header-line-two'>& orders</span>
 					</div>
 				</Link>
 
-				<Link to="/checkout">
-					<div className="header_option_basket">
-						<ShoppingBasketIcon />
-						<span className="header_line_two header_basket_count">
-							{basket?.length}
-						</span>
+				<Link to='/checkout'>
+					<div className='header-option-basket'>
+						<FontAwesomeIcon
+							icon={faShoppingBag}
+							size='lg'
+							fixedWidth
+							arial-label='basket'
+						/>
+						<span className='header-line-two header-basket-count'>{items}</span>
 					</div>
 				</Link>
 			</div>

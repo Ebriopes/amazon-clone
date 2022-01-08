@@ -27,10 +27,10 @@ function Orders() {
 	}, [user]);
 
 	return (
-		<div className="orders">
+		<div className='orders'>
 			<h1>Your Orders</h1>
 
-			<div className="orders-order">
+			<div className='orders-order'>
 				{orders.map(order => (
 					<Order order={order} key={order?.id} />
 				))}

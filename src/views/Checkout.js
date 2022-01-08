@@ -1,36 +1,59 @@
-import React from 'react'
-import Subtotal from 'components/Subtotal'
-import './Checkout.css'
-import CheckoutProduct from 'components/CheckoutProduct'
-import { useStateValue } from 'contexts/StateProvidder'
+import React from 'react';
+import CurrencyFormat from 'react-currency-format';
+import Subtotal from 'components/Subtotal';
+import CheckoutProduct from 'components/CheckoutProduct';
+import { useStateValue } from 'contexts/StateProvidder';
+import { getBasketTotal } from 'contexts/Reducer';
+import './Checkout.css';
 
 const Checkout = () => {
-  const [{ user, basket }] = useStateValue()
+	const [{ basket }] = useStateValue();
+	const { quantity: items, amount } = getBasketTotal(basket);
 
-  return (
-    <div className="checkout">
-      <div className="checkout_left">
-        <div>
-          <h3>Hello {user?.email}</h3>
-          <h2 className="checkout_title"> Your basket shop</h2>
-          <br />
-          {basket.map(item => (
-            <CheckoutProduct
-              key={Math.random(item.id)}
-              id={item.id}
-              image={item.image}
-              price={item.price}
-              rating={item.rating}
-              title={item.title}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="checkour_right">
-        <Subtotal />
-      </div>
-    </div>
-  )
-}
+	return (
+		<main className='checkout'>
+			<section className='checkout-left'>
+				<div>
+					<h1 className='checkout-title'> Your basket shop</h1>
 
-export default Checkout
+					{basket.map(item => (
+						<CheckoutProduct
+							key={item.id}
+							id={item.id}
+							image={item.image}
+							price={item.price}
+							rating={item.rating}
+							title={item.title}
+							quantity={item.quantity}
+						/>
+					))}
+				</div>
+
+				<div className='checkout-subtotal'>
+					<span>
+						Subtotal{' '}
+						<CurrencyFormat
+							renderText={value => (
+								<React.Fragment>
+									({items} item{items > 1 ? 's' : ''}
+									): <strong>{value}</strong>
+								</React.Fragment>
+							)}
+							decimalScale={2}
+							fixedDecimalScale={true}
+							value={amount}
+							displayType={'text'}
+							thousandSeparator={true}
+							prefix={'$'}
+						/>
+					</span>
+				</div>
+			</section>
+			<article className='checkout-right'>
+				<Subtotal />
+			</article>
+		</main>
+	);
+};
+
+export default Checkout;
