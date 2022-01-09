@@ -76,7 +76,7 @@ function Payment() {
 				try {
 					const response = await axios({
 						method: 'post',
-						url: `/payments/create?total=${amount * 100}`
+						url: `/payments/create?total=${(amount * 100).toFixed(0)}`
 					});
 
 					setClientSecret(response?.data?.clientSecret);

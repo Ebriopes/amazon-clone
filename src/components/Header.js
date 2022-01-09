@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SearchIcon from '@material-ui/icons/Search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingBag } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faShoppingBag } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from '@firebase/auth';
 import { auth } from 'firebase';
 import { useStateValue } from 'contexts/StateProvidder';
@@ -35,7 +34,7 @@ const Header = () => {
 			<div className='header-search'>
 				<div className='header-search-bar'>
 					<input className='header-search-input' type='text' />
-					<SearchIcon className='header-search-icon' />
+					<FontAwesomeIcon icon={faSearch} className='header-search-icon' />
 				</div>
 			</div>
 

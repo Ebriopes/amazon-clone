@@ -9,6 +9,7 @@
 	width: 100%;
 	max-width: 200px;
 	height: 180px;
+	cursor: pointer;
 }
 
 .checkout-product-info {
@@ -26,6 +27,11 @@
 	justify-content: space-between;
 	font-size: 17px;
 	font-weight: 400;
+	cursor: pointer;
+}
+
+.checkout-product-price {
+	margin-left: 3rem;
 }
 
 .checkout-product-quantity {

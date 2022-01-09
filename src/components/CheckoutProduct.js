@@ -1,9 +1,8 @@
 import React from 'react';
 import CurrencyFormat from 'react-currency-format';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as emptyStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as fullStar } from '@fortawesome/free-regular-svg-icons';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { useStateValue } from 'contexts/StateProvidder';
+import Stars from './Stars';
 import './CheckoutProduct.css';
 
 function CheckoutProduct({
@@ -16,6 +15,7 @@ function CheckoutProduct({
 	hiddenButton = false,
 	hiddenOptions = false
 }) {
+	const history = useHistory();
 	const [{ basket }, dispatch] = useStateValue();
 
 	const removeFromBasket = () => {
@@ -43,19 +43,28 @@ function CheckoutProduct({
 		}
 	};
 
+	const handleProduct = () => {
+		history.replace(`/product/${id}`);
+	};
+
 	return (
 		<article className='checkout-product'>
-			<img className='checkout-product-image' src={image} alt='Product' />
+			<img
+				onClick={handleProduct}
+				className='checkout-product-image'
+				src={image}
+				alt='Product'
+			/>
 
 			<aside className='checkout-product-info'>
 				<section>
-					<p className='checkout-product-title'>
+					<p onClick={handleProduct} className='checkout-product-title'>
 						{title}
 						<CurrencyFormat
 							renderText={value => (
 								<span>
 									{hiddenOptions && quantity > 1 && `(${quantity} items) `}
-									<strong>{value}</strong>
+									<strong className='checkout-product-price'>{value}</strong>
 								</span>
 							)}
 							decimalScale={2}
@@ -66,18 +75,8 @@ function CheckoutProduct({
 							prefix={'$'}
 						/>
 					</p>
-					<div className='checkout-product-rating'>
-						{Array(5)
-							.fill()
-							.map((_, i) => (
-								<FontAwesomeIcon
-									icon={i < rating ? emptyStar : fullStar}
-									color='#F7981D'
-									aria-label='star'
-									key={i}
-								/>
-							))}
-					</div>
+
+					<Stars rating={rating} />
 				</section>
 
 				{!hiddenOptions && (

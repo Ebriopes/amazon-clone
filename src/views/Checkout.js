@@ -8,7 +8,7 @@ import './Checkout.css';
 
 const Checkout = () => {
 	const [{ basket }] = useStateValue();
-	const { quantity: items, amount } = getBasketTotal(basket);
+	const { quantity: products, amount } = getBasketTotal(basket);
 
 	return (
 		<main className='checkout'>
@@ -35,7 +35,7 @@ const Checkout = () => {
 						<CurrencyFormat
 							renderText={value => (
 								<React.Fragment>
-									({items} item{items > 1 ? 's' : ''}
+									({products} item{products > 1 ? 's' : ''}
 									): <strong>{value}</strong>
 								</React.Fragment>
 							)}
@@ -50,7 +50,7 @@ const Checkout = () => {
 				</div>
 			</section>
 			<article className='checkout-right'>
-				<Subtotal />
+				<Subtotal disabled={!products} />
 			</article>
 		</main>
 	);

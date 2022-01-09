@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { fakeStoreInstance as axios } from 'services/Axios';
-import Product from 'components/Product';
+import HomeProduct from 'components/HomeProduct';
+import Loader from 'components/Loader';
 import background from 'images/background.jpg';
 import './Home.css';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Home = () => {
 	const [loading, setLoading] = useState(true);
@@ -41,22 +40,17 @@ const Home = () => {
 				<img className='home-image' alt='background' src={background} />
 
 				{loading ? (
-					<FontAwesomeIcon
-						className='home-loading'
-						icon={faSpinner}
-						size='10x'
-						color='#F7981D'
-					/>
+					<Loader />
 				) : (
 					groupProducts?.map((group, gid) => (
 						<article id={`group-${gid}`} key={gid} className='home-row'>
 							{group.map(({ id, image, price, rating, title }) => (
-								<Product
+								<HomeProduct
 									id={id}
 									image={image}
 									key={id}
 									price={price}
-									rating={rating?.rate}
+									rating={rating}
 									title={title}
 								/>
 							))}

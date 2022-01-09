@@ -16,6 +16,15 @@ export const getBasketTotal = basket =>
 		{ quantity: 0, amount: 0 }
 	);
 
+export const addItemToBasket = (basket, item) => {
+	const newBasket = [...basket];
+	const basketItem = newBasket?.find(basketItem => basketItem.id === item.id);
+
+	basketItem ? (basketItem.quantity += item?.quantity) : newBasket.push(item);
+
+	return newBasket;
+};
+
 const reducer = (state, action) => {
 	switch (action.type) {
 		case 'ADD_TO_BASKET':

@@ -1,0 +1,22 @@
+.stars {
+	position: relative;
+	display: flex;
+}
+
+.stars>label {
+	display: none;
+	position: absolute;
+	left: 6rem;
+	bottom: -50%;
+	padding: 0.25rem 0.5rem;
+	background-color: #FFF;
+	border: 1px solid #BBB;
+}
+
+.stars svg {
+	cursor: help
+}
+
+.stars svg:hover~label {
+	display: unset;
+}

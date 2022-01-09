@@ -5,7 +5,7 @@ import { useStateValue } from 'contexts/StateProvidder';
 import { getBasketTotal } from 'contexts/Reducer';
 import './Subtotal.css';
 
-const Subtotal = () => {
+const Subtotal = ({ disabled = true }) => {
 	const history = useHistory();
 	const [{ basket }] = useStateValue();
 	const { quantity: items, amount } = getBasketTotal(basket);
@@ -32,7 +32,7 @@ const Subtotal = () => {
 				thousandSeparator={true}
 				prefix={'$'}
 			/>
-			<button onClick={() => history.push('/payment')}>
+			<button disabled={disabled} onClick={() => history.push('/payment')}>
 				Proceed to checkout
 			</button>
 		</div>
