@@ -2,6 +2,16 @@
 	padding: 1.25rem 5rem;
 }
 
-.options > h1 {
+.orders>h1 {
 	margin: 2rem 0;
+}
+
+@media screen and (max-width: 680px) {
+	.orders {
+		padding: 0 2rem;
+	}
+
+	.orders>h1 {
+		margin: 1rem;
+	}
 }

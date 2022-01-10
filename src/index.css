@@ -17,9 +17,10 @@ code {
 		monospace;
 }
 
-button {
+:is(button, select, option) {
 	cursor: pointer;
 }
+
 button[disabled] {
 	cursor: not-allowed;
 }

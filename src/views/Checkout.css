@@ -1,5 +1,7 @@
 .checkout {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 	gap: 1rem;
 	padding: 20px;
 	background-color: #EAEDED;
@@ -7,6 +9,7 @@
 }
 
 .checkout-left {
+	flex: 0.8;
 	width: 100%;
 	padding: 1rem 2rem;
 	background-color: #FFFDFC;
@@ -17,6 +20,7 @@
 }
 
 .checkout-right {
+	flex: 0.2;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

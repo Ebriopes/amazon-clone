@@ -17,3 +17,16 @@
 	font-weight: 600;
 	text-align: right;
 }
+
+@media screen and (max-width: 680px) {
+	.order {
+		padding: 1rem;
+	}
+
+	.order-id {
+		top: 1.5rem;
+		max-width: 50%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}

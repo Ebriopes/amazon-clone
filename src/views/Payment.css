@@ -22,6 +22,9 @@
 
 .payment-section {
 	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	justify-content: center;
 	padding: 1.25rem;
 	margin: 0 1.25rem;
 	border-bottom: 1px solid lightgray;
@@ -32,22 +35,19 @@
 }
 
 .payment-title {
-	flex: 0.2;
+	flex: 0.2 1 12rem;
 }
 
 .payment-address,
 .payment-items,
 .payment-details {
-	flex: 0.8;
-}
-
-.payment-items>h2 {
-	padding-left: 1rem;
+	flex: 0.8 25rem;
 }
 
 .payment-details>form {
-	padding: 1rem;
+	padding: 1rem 0;
 	max-width: 25rem;
+	margin: auto;
 }
 
 .payment-details h3 {

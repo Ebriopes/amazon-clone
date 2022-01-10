@@ -1,11 +1,15 @@
 .checkout-product {
 	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	justify-content: center;
 	padding: 20px 1rem;
 }
 
 .checkout-product-image {
-	flex: 0.2;
+	flex: 1;
 	object-fit: contain;
+	min-width: 200px;
 	width: 100%;
 	max-width: 200px;
 	height: 180px;
@@ -13,25 +17,37 @@
 }
 
 .checkout-product-info {
-	flex: 0.8;
+	flex: 1;
 	width: 100%;
 	padding-left: 20px;
 	display: flex;
+	gap: 1rem;
 	flex-direction: column;
 	justify-content: space-between;
 }
 
-.checkout-product-title {
+.checkout-product-details {
 	display: flex;
-	width: 100%;
+	gap: 1rem;
+	flex-wrap: wrap;
 	justify-content: space-between;
+	width: 100%;
+	text-align: start;
 	font-size: 17px;
 	font-weight: 400;
 	cursor: pointer;
 }
 
+.checkout-product-title {
+	flex: 1;
+	min-width: 10rem;
+}
+
 .checkout-product-price {
-	margin-left: 3rem;
+	flex-basis: content;
+	margin-left: auto;
+	min-width: 5rem;
+	text-align: end;
 }
 
 .checkout-product-quantity {

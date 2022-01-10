@@ -58,13 +58,13 @@ function CheckoutProduct({
 
 			<aside className='checkout-product-info'>
 				<section>
-					<p onClick={handleProduct} className='checkout-product-title'>
-						{title}
+					<p onClick={handleProduct} className='checkout-product-details'>
+						<span className='checkout-product-title'>{title}</span>
 						<CurrencyFormat
 							renderText={value => (
-								<span>
+								<span className='checkout-product-price'>
 									{hiddenOptions && quantity > 1 && `(${quantity} items) `}
-									<strong className='checkout-product-price'>{value}</strong>
+									<strong>{value}</strong>
 								</span>
 							)}
 							decimalScale={2}
