@@ -11,8 +11,8 @@ import Login from './views/Login';
 import Checkout from './views/Checkout';
 import Payment from './views/Payment';
 import Orders from 'views/Orders';
-import './App.css';
 import Product from 'views/Product';
+import './App.css';
 
 const promise = loadStripe(
 	'pk_test_51KBR2KLvjBdLcdzrCmKGsttQM2ZBte2YUXWtGJ5HvF0UBjsFV4hLK1ozJgnX1Lb44rKuulRiLUT9E5ZepQ5E7X8x001bqW8awK'
