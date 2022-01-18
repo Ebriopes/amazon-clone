@@ -1,23 +1,24 @@
 .product {
 	display: flex;
-	height: calc(100vh - 60px);
+	flex-wrap: wrap;
+	gap: 3rem;
+	min-height: calc(100vh - 60px);
 	padding: 3rem 5rem;
 	justify-content: center;
 	background-color: #FFF;
 }
 
 .product>img {
-	flex: 0.5;
+	flex: 1 2;
 	min-width: 250px;
 	max-height: 500px;
 	object-fit: contain;
 }
 
 .product-details {
-	flex: 0.5;
+	flex: 1 0;
+	min-width: 300px;
 	height: 100%;
-	padding: 3rem;
-	margin-left: 3rem;
 }
 
 .product-title {
@@ -42,4 +43,14 @@
 	border: 1px solid;
 	border-color: #a88734 #9c7e31 #846a29;
 	color: #111;
+}
+
+@media screen and (max-width: 640px) {
+	.product {
+		padding: 2rem;
+	}
+
+	.product-details {
+		padding: 1rem;
+	}
 }
